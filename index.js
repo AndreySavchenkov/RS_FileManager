@@ -1,4 +1,5 @@
 import readline from "readline";
+import { stdin as input, stdout as output } from "node:process";
 import {
   printCurrentDirectory,
   printWelcomeMessage,
@@ -26,10 +27,7 @@ import {
   decompressFile,
 } from "./helpers/compressAndDecompress.js";
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+const rl = readline.createInterface({ input, output });
 
 rl.on("line", (input) => {
   const [command, ...args] = input.split(" ");
