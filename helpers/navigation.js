@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { printCurrentDirectory } from "./common.js";
+import { printCurrentDirectory, printOperationFailed } from "./common.js";
 
 const listFilesAndFolders = () => {
   const currentDirectory = process.cwd();
@@ -33,14 +33,17 @@ const navigateUp = () => {
   printCurrentDirectory();
 };
 
-const navigateToDirectory = (directoryPath) => {
+const navigateToDirectory = async (directoryPath) => {
   const currentDirectory = process.cwd();
   const newDirectory = path.isAbsolute(directoryPath)
     ? directoryPath
     : path.join(currentDirectory, directoryPath);
 
   try {
-    fs.accessSync(newDirectory, fs.constants.R_OK | fs.constants.X_OK);
+    await fs.promises.access(
+      newDirectory,
+      fs.constants.R_OK | fs.constants.X_OK
+    );
     process.chdir(newDirectory);
     printCurrentDirectory();
   } catch (error) {
