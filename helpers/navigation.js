@@ -1,9 +1,9 @@
 import path from "path";
 import fs from "fs";
-import { getCurrentDirectory, printCurrentDirectory } from "./common";
+import { printCurrentDirectory } from "./common.js";
 
 const listFilesAndFolders = () => {
-  const currentDirectory = getCurrentDirectory();
+  const currentDirectory = process.cwd();
   const items = fs.readdirSync(currentDirectory);
   items.sort();
 
@@ -22,10 +22,10 @@ const listFilesAndFolders = () => {
 };
 
 const navigateUp = () => {
-  const currentDirectory = getCurrentDirectory();
+  const currentDirectory = process.cwd();
   const parentDirectory = path.resolve(currentDirectory, "..");
 
-  if (parentDirectory !== currentDirectory) {
+  if (parentDirectory !== process.cwd()) {
     process.chdir(parentDirectory);
   }
 
@@ -33,9 +33,10 @@ const navigateUp = () => {
 };
 
 const navigateToDirectory = (directoryPath) => {
+  const currentDirectory = process.cwd();
   const newDirectory = path.isAbsolute(directoryPath)
     ? directoryPath
-    : path.join(getCurrentDirectory(), directoryPath);
+    : path.join(currentDirectory, directoryPath);
 
   try {
     fs.accessSync(newDirectory, fs.constants.R_OK | fs.constants.X_OK);

@@ -1,5 +1,12 @@
 import readline from "readline";
+import os from "os";
+import path from "path";
 import { stdin as input, stdout as output } from "node:process";
+import {
+  listFilesAndFolders,
+  navigateUp,
+  navigateToDirectory,
+} from "./helpers/navigation.js";
 import {
   printCurrentDirectory,
   printWelcomeMessage,
@@ -28,6 +35,10 @@ import {
 } from "./helpers/compressAndDecompress.js";
 
 const rl = readline.createInterface({ input, output });
+
+const homeDir = os.homedir();
+const initialWorkingDirectory = path.join(homeDir);
+process.chdir(initialWorkingDirectory);
 
 rl.on("line", (input) => {
   const [command, ...args] = input.split(" ");
