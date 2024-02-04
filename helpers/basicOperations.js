@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
 import { printOperationFailed } from "./common.js";
 
@@ -54,22 +54,23 @@ const copyFile = (sourcePath, destinationPath) => {
   }
 };
 
-const moveFile = (sourcePath, destinationPath) => {
+const moveFile = async (sourcePath, destinationPath) => {
   try {
-    copyFile(sourcePath, destinationPath);
-    fs.unlinkSync(sourcePath);
+    await fs.copyFile(sourcePath, destinationPath);
+    await fs.unlink(sourcePath);
 
     console.log(
       `${path.basename(sourcePath)} moved to ${destinationPath} successfully.`
     );
   } catch (error) {
+    console.error(`Error moving file: ${error.message}`);
     printOperationFailed();
   }
 };
 
-const deleteFile = (filePath) => {
+const deleteFile = async (filePath) => {
   try {
-    fs.unlinkSync(filePath);
+    await fs.unlink(filePath);
     console.log(`${path.basename(filePath)} deleted successfully.`);
   } catch (error) {
     printOperationFailed();
