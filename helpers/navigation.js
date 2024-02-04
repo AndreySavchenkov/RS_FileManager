@@ -14,11 +14,12 @@ const listFilesAndFolders = () => {
     (item) => !fs.statSync(path.join(currentDirectory, item)).isDirectory()
   );
 
-  console.log("Folders:");
-  folders.forEach((folder) => console.log(`  ${folder}`));
+  const foldersAndFiles = [
+    ...folders.map((folder) => ({ Type: "Folder", Name: folder })),
+    ...files.map((file) => ({ Type: "File", Name: file })),
+  ];
 
-  console.log("Files:");
-  files.forEach((file) => console.log(`  ${file}`));
+  console.table(foldersAndFiles);
 };
 
 const navigateUp = () => {
