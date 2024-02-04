@@ -11,10 +11,10 @@ const catFile = (filePath) => {
   }
 };
 
-const createEmptyFile = (fileName) => {
+const createEmptyFile = async (fileName) => {
   try {
     const filePath = path.join(process.cwd(), fileName);
-    fs.writeFileSync(filePath, "");
+    await fs.writeFile(filePath, "");
     console.log(`${fileName} created successfully.`);
   } catch (error) {
     printOperationFailed();
